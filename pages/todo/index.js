@@ -47,7 +47,7 @@ window.addEventListener('DOMContentLoaded', () => {
     .join('');
 });
 
-// Função para abrir o modal de edição
+// Abrir o modal de edição
 function openEditModal(taskId) {
   const tasks = JSON.parse(localStorage.getItem(taskKey)) || [];
   const task = tasks.find((t) => t.id === taskId);
@@ -59,7 +59,7 @@ function openEditModal(taskId) {
   }
 }
 
-// Função para fechar o modal de edição
+// Fechar o modal de edição
 function closeModal() {
   document.getElementById('editModal').style.display = 'none';
 }

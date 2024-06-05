@@ -19,6 +19,7 @@ function addTask(event) {
     <h2>${taskTitle}</h2>
     <p>${taskDescription}</p>
     <button class="edit-button" title="Editar tarefa" onclick="openEditModal(${taskId})"></button>
+    <button class="delete-button" title="Excluir tarefa" onclick="deleteTask(${taskId})"></button>
   `;
 
   taskList.appendChild(li);
@@ -42,6 +43,7 @@ window.addEventListener('DOMContentLoaded', () => {
         <h2>${task.title}</h2>
         <p>${task.description}</p>
         <button class="edit-button" title="Editar tarefa" onclick="openEditModal(${task.id})"></button>
+        <button class="delete-button" title="Excluir tarefa" onclick="deleteTask(${task.id})"></button>
       </li>`
     )
     .join('');
@@ -64,8 +66,26 @@ function closeModal() {
   document.getElementById('editModal').style.display = 'none';
 }
 
-// Função para editar a tarefa (sem implementação real)
-function editTask() {
-  // Aqui você pode implementar a funcionalidade de edição.
+// Função para editar a tarefa
+function editTask(event) {
+  event.preventDefault(); // Evita o recarregamento da página ao editar
+  const taskId = parseInt(document.getElementById('editForm').dataset.taskId);
+  const tasks = JSON.parse(localStorage.getItem(taskKey)) || [];
+  const taskIndex = tasks.findIndex((t) => t.id === taskId);
+  if (taskIndex > -1) {
+    tasks[taskIndex].title = document.getElementById('editTitle').value;
+    tasks[taskIndex].description = document.getElementById('editDescription').value;
+    localStorage.setItem(taskKey, JSON.stringify(tasks));
+    document.querySelector(`#${taskId} h2`).textContent = tasks[taskIndex].title;
+    document.querySelector(`#${taskId} p`).textContent = tasks[taskIndex].description;
+  }
   closeModal();
+}
+
+// Função para deletar a tarefa
+function deleteTask(taskId) {
+  let tasks = JSON.parse(localStorage.getItem(taskKey)) || [];
+  tasks = tasks.filter((task) => task.id !== taskId);
+  localStorage.setItem(taskKey, JSON.stringify(tasks));
+  document.getElementById(taskId).remove();
 }
